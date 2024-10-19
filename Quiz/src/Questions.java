@@ -20,12 +20,17 @@ public class Questions extends javax.swing.JFrame {
             "What is the capital of France?",
             "What is 2 + 2?",
             "Who wrote 'Hamlet'?"};
-                int i =0;
-                JLabel q;
-                JButton next,ans1;
-    private String[] answers = {"1) Paris","2) .Ahemedabad","3) Kolkatta","4) TVM",
-                                               "1) 2",  "2) 4" , "3) 6", "4) 10",
-                                               "1) Akash", "2) Akash", "3) Adithya P", "4)Aadarsh"};
+    int i =0,score = 0;
+    JLabel q;
+    JButton next,ans1,ans2,ans3,ans4;
+    
+    String[][] answers = {
+            {"1) Paris", "2) Ahemedabad", "3) Kolkatta", "4) TVM"}, // Options for Question 1
+            {"1) 2", "2) 4", "3) 6", "4) 10"},                       // Options for Question 2
+            {"1) Akash", "2) Akash", "3) Adithya P", "4) Aadarsh"}  // Options for Question 3
+        };
+    
+    private String[] correct_ans = {"1) Paris", "2) 4", "4) Aadarsh"};
     public Questions() {
         //=============================================Questions============================================
         initComponents();
@@ -43,21 +48,104 @@ public class Questions extends javax.swing.JFrame {
         jPanel3.add(next);
         //=================================================================================================
        //================================================ANSWER BUTTONS======================================
-        ans1 = new JButton(answers[0]);
+        ans1 = new JButton(answers[i][0]);
         ans1.setBounds(100,200,350,75);
         ans1.setBackground(new Color(51, 0, 153)); // Custom light blue color
         ans1.setForeground(new Color(255, 255, 255));
         ans1.setFont(new Font("Arial", Font.BOLD, 40));
         jPanel3.add(ans1);
         
+        ans2 = new JButton(answers[i][1]);
+        ans2.setBounds(650,200,350,75);
+        ans2.setBackground(new Color(51, 0, 153)); // Custom light blue color
+        ans2.setForeground(new Color(255, 255, 255));
+        ans2.setFont(new Font("Arial", Font.BOLD, 40));
+        jPanel3.add(ans2);
+        
+        
+        ans3 = new JButton(answers[i][2]);
+        ans3.setBounds(100,375,350,75);
+        ans3.setBackground(new Color(51, 0, 153)); // Custom light blue color
+        ans3.setForeground(new Color(255, 255, 255));
+        ans3.setFont(new Font("Arial", Font.BOLD, 40));
+        jPanel3.add(ans3);
+        
+        
+        ans4 = new JButton(answers[i][3]);
+        ans4.setBounds(650,375,350,75);
+        ans4.setBackground(new Color(51, 0, 153)); // Custom light blue color
+        ans4.setForeground(new Color(255, 255, 255));
+        ans4.setFont(new Font("Arial", Font.BOLD, 40));
+        jPanel3.add(ans4);
         
         
         
         
+        ans1.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(i < questions.length)
+                {
+                    if(ans1.getText().equals(correct_ans[i])){
+                        score++;
+                       
+                    }
+                    
+                }
+            }
+        });
         
         
+        ans2.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(i < questions.length)
+                {
+                    if(ans2.getText().equals(correct_ans[i])){
+                        score++;
+                        
+                    }
+                    
+                }
+            }
+        });
         
         
+        ans3.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(i < questions.length)
+                {
+                    if(ans3.getText().equals(correct_ans[i])){
+                        score++;
+                       
+                    }
+                    
+                }
+            }
+        });
+        
+        
+        ans4.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(i < questions.length)
+                {
+                    if(ans4.getText().equals(correct_ans[i])){
+                        score++;
+                    }
+                    
+                }
+            }
+        });
         
         
         
@@ -74,24 +162,22 @@ public class Questions extends javax.swing.JFrame {
                 {
                     i++;
                     q.setText(questions[i]);
-                    ans1.setText(answers[i*4]);
+                    
+                    
+                    ans1.setText(answers[i][0]);
+                    ans2.setText(answers[i][1]);
+                    ans3.setText(answers[i][2]);
+                    ans4.setText(answers[i][3]);
+                    
+                    
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Score: "+ score);
                 }
             }
         });
         
-        
-//          ans1.addActionListener(new ActionListener()
-//        {
-//            @Override
-//            public void actionPerformed(ActionEvent e)
-//            {
-//                if(i < questions.length - 1)
-//                {
-//                    i++;
-//                    q.setText(answers[i*4]);
-//                }
-//            }
-//        });
+       
         
         
      
@@ -107,7 +193,7 @@ public class Questions extends javax.swing.JFrame {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -163,7 +249,7 @@ public class Questions extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
     /**
      * @param args the command line arguments
@@ -200,8 +286,8 @@ public class Questions extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }
