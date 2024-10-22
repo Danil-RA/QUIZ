@@ -1,14 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 
 public class Questions extends javax.swing.JFrame {
-public static String email; 
+
     private String[] questions = {
         "What is the capital of France?",
         "What is 2 + 2?",
@@ -70,18 +65,16 @@ public static String email;
         ans4.setForeground(new Color(255, 255, 255));
         ans4.setFont(new Font("Arial", Font.BOLD, 40));
         jPanel3.add(ans4);
-        
-        addHoverEffect(ans1, new Color(51, 0, 153), Color.GREEN);
-        addHoverEffect(ans2, new Color(51, 0, 153), Color.GREEN);
-        addHoverEffect(ans3, new Color(51, 0, 153), Color.GREEN);
-        addHoverEffect(ans4, new Color(51, 0, 153), Color.GREEN);
 
         // Answer Button Listeners
         ans1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!scoreUpdated && ans1.getText().equals(correct_ans[i])) {
-                    score++;
+                if (!scoreUpdated) {
+                    if (ans1.getText().equals(correct_ans[i])) {
+                        score++;
+                    }
+                    ans1.setBackground(Color.GREEN); // Change color for correct answer
                     scoreUpdated = true;  // Mark that score has been updated
                 }
             }
@@ -90,8 +83,11 @@ public static String email;
         ans2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!scoreUpdated && ans2.getText().equals(correct_ans[i])) {
-                    score++;
+                if (!scoreUpdated) {
+                    if (ans2.getText().equals(correct_ans[i])) {
+                        score++;
+                    }
+                    ans2.setBackground(Color.GREEN); // Change color for correct answer
                     scoreUpdated = true;
                 }
             }
@@ -100,8 +96,11 @@ public static String email;
         ans3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!scoreUpdated && ans3.getText().equals(correct_ans[i])) {
-                    score++;
+                if (!scoreUpdated) {
+                    if (ans3.getText().equals(correct_ans[i])) {
+                        score++;
+                    }
+                    ans3.setBackground(Color.GREEN); // Change color for correct answer
                     scoreUpdated = true;
                 }
             }
@@ -110,8 +109,11 @@ public static String email;
         ans4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!scoreUpdated && ans4.getText().equals(correct_ans[i])) {
-                    score++;
+                if (!scoreUpdated) {
+                    if (ans4.getText().equals(correct_ans[i])) {
+                        score++;
+                    }
+                    ans4.setBackground(Color.GREEN); // Change color for correct answer
                     scoreUpdated = true;
                 }
             }
@@ -130,29 +132,21 @@ public static String email;
                     ans3.setText(answers[i][2]);
                     ans4.setText(answers[i][3]);
                     
+                    // Reset colors and flags for the next question
+                    ans1.setBackground(new Color(51, 0, 153));
+                    ans2.setBackground(new Color(51, 0, 153));
+                    ans3.setBackground(new Color(51, 0, 153));
+                    ans4.setBackground(new Color(51, 0, 153));
+                    
                     scoreUpdated = false;  // Reset the scoreUpdated flag for the next question
                 } else {
-                    
-                    JOptionPane.showMessageDialog(null, "Score: " + email);
-                    String sql = "SELECT * FROM welcome WHERE email = ?";
-                    
+                    JOptionPane.showMessageDialog(null, "Score: " + score);
                 }
             }
         });
 
         setVisible(true);
     }
-    private void addHoverEffect(final JButton button, final Color defaultColor, final Color hoverColor) {
-    button.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-            button.setBackground(hoverColor);
-        }
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-            button.setBackground(defaultColor);
-        }
-    });
-}
-
 
     public void actionPerformed(ActionEvent e) {}
 
@@ -212,7 +206,6 @@ public static String email;
     }
 
     public static void main(String args[]) {
-        System.out.print(email);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Questions().setVisible(true);
@@ -225,3 +218,4 @@ public static String email;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration                   
 }
+

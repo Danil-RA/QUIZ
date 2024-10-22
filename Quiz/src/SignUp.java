@@ -217,25 +217,36 @@ public class SignUp extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-        
-        
-        try{
-            String s = "insert into welcome(slno,Name,email,password,rePassword) values(slNo, '"+jTextField1.getText()+"','"+jTextField2.getText()+"','"+jPasswordField1.getText()+"','"+jPasswordField2.getText()+"');";
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz","root","");
-            Statement stm = con.createStatement();
-            stm.executeUpdate(s);
-           // jdbc:mysql://localhost:3306/mbcet?zeroDateTimeBehavior=convertToNull
-            JOptionPane.showMessageDialog(null, "inserted");
-            
-        }
+         String password = jPasswordField1.getText();
+        String rePassword = jPasswordField2.getText();
+        if(password.equals(rePassword))
+        {
+            try{
+                String s = "insert into welcome(slno,Name,email,password,rePassword) values(slNo, '"+jTextField1.getText()+"','"+jTextField2.getText()+"','"+jPasswordField1.getText()+"','"+jPasswordField2.getText()+"');";
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz","root","");
+                Statement stm = con.createStatement();
+                stm.executeUpdate(s);
+               // jdbc:mysql://localhost:3306/mbcet?zeroDateTimeBehavior=convertToNull
+                JOptionPane.showMessageDialog(null, "SignUp Successfull! \n Click OK to Login");
+                Welcome obj = new Welcome();
+                obj.show();
+                this.hide();
+
+
+
+            }
         catch(Exception e)
         {
              JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    else
+        {
+             JOptionPane.showMessageDialog(null, "Password and Re-Type Password not matches");
+        }
+    }
+    
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed

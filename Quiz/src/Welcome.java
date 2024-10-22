@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
@@ -18,6 +20,7 @@ public class Welcome extends javax.swing.JFrame {
     /**
      * Creates new form Welcome
      */
+    
     public Welcome() {
         initComponents();
         
@@ -192,9 +195,50 @@ public class Welcome extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Questions obj = new Questions();
-        obj.show();
-        this.hide();
+        String email = jTextField1.getText();
+        Questions.email = email;
+        //System.out.print(email);
+        String pass = jPasswordField1.getText();
+        //System.out.print(pass); 
+        
+        String DB_URL = "jdbc:mysql://localhost:3306/quiz"; 
+        String USER = "root"; // Default MySQL user in XAMPP
+        String PASS = "";
+        
+        
+        try {
+        // Establish the connection
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
+        
+        // Create the SQL query to search for the email and password
+        String sql = "SELECT * FROM welcome WHERE email = ? AND password = ?";
+        
+        // Prepare the statement
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, email);
+        pstmt.setString(2, pass);
+        
+        // Execute the query
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            // If a matching record is found
+            JOptionPane.showMessageDialog(this, "Login successful");
+            Questions obj = new Questions();
+            obj.show();
+            this.hide();
+        }
+        else{
+            JOptionPane.showMessageDialog(this,"Invalid Username or Password");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+        }
+        catch(Exception e){
+                JOptionPane.showMessageDialog(this, e.getMessage());
+       }
         
         
         
