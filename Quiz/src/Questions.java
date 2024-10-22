@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 
 public class Questions extends javax.swing.JFrame {
@@ -133,8 +134,43 @@ public static String email;
                     scoreUpdated = false;  // Reset the scoreUpdated flag for the next question
                 } else {
                     
-                    JOptionPane.showMessageDialog(null, "Score: " + email);
-                    String sql = "SELECT * FROM welcome WHERE email = ?";
+                    JOptionPane.showMessageDialog(null, "Score: " + score);
+                   // String sql = "SELECT * FROM welcome WHERE email = ?";
+                    
+                    
+                    
+                    try {
+                // Database connection details
+                String url = "jdbc:mysql://localhost:3306/quiz"; // Replace with your database URL
+                String user = "root"; // Replace with your database username
+                String password = ""; // Replace with your database password
+
+                // Establish connection to the database
+                Connection conn = DriverManager.getConnection(url, user, password);
+
+                // Prepare the SQL query to update the score for the given email
+                String sql = "UPDATE welcome SET score = ? WHERE email = ?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                
+                // Set the values for the query (score and email)
+                pstmt.setInt(1, score);
+                pstmt.setString(2, email);
+
+                // Execute the update query
+                int rowsUpdated = pstmt.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Score updated successfully for email: " + email);
+                } else {
+                    System.out.println("Failed to update the score. Email not found.");
+                }
+
+                // Close the connection
+                conn.close();
+            }
+                    catch (Exception ex) {
+                ex.printStackTrace();
+            }
                     
                 }
             }
