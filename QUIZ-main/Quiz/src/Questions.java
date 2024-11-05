@@ -10,125 +10,124 @@ import java.sql.PreparedStatement;
 public class Questions extends javax.swing.JFrame {
     public static String email; 
     private String[] questions = {
-        "What is the capital of France?",
-        "What is 2 + 2?",
-        "Who wrote 'Hamlet'?"
+        "1.In Java, which of these keywords is used to inherit a class?",
+        "2.What is the default access modifier for class members in Java?",
+        "3.In Java, which method is used to compare two strings for equality?",
+        "4.Which method is used to start a thread in Java?",
+        "5.What is the default value of a boolean variable in Java?"
     };
-    int i = 0, score = 0, s, n = 0;
+    int i = 0, s, n = 0;
+    public static int score = 0;
+    // public static int Globalscore = score;
     JLabel q;
     JButton next, ans1, ans2, ans3, ans4;
 
     int[] topScore = new int[3];
     String[][] answers = {
-        {"1) Paris", "2) Ahmedabad", "3) Kolkata", "4) TVM"},  
-        {"1) 2", "2) 4", "3) 6", "4) 10"},                     
-        {"1) Akash", "2) Akash", "3) Adithya P", "4) Aadarsh"}  
+        {"1) inherit", "2) implements", "3) extends", "4) override"},  
+        {"1) public", "2) protected", "3) default", "4) private"},                     
+        {"1) ==", "2) equals()", "3) compareTo()", "4) equal()"},
+        {"1) run()", "2) begin()", "3) start()", "4) execute()"},
+        {"1) true", "2) false", "3) 0", "4) null"}
     };
     
-    private String[] correct_ans = {"1) Paris", "2) 4", "4) Aadarsh"};
+    private String[] correct_ans = {"3) extends", "3) default", "2) equals()", "3) start()", "2) false"};
     JButton lastSelectedButton = null;  
     String ans; 
     
     public Questions() {
-        initComponents();
-        
-        q = new JLabel(questions[i]);
-        q.setBounds(100, 100, 1000, 50);
-        q.setFont(new Font("Arial", Font.BOLD, 40));
-        jPanel3.add(q);
+    initComponents(); // Ensure components are initialized first
+    
+    // Now add the rest of the constructor code
+    q = new JLabel(questions[i]);
+    q.setBounds(100, 100, 1000, 50);
+    q.setFont(new Font("Arial", Font.BOLD, 30));
+    jPanel3.add(q);
 
-        next = new JButton("Next ->");
-        next.setBounds(900, 500, 120, 50);
-        next.setBackground(new Color(51, 0, 153));
-        next.setForeground(new Color(255, 255, 255));
-        next.setFont(new Font("Arial", Font.BOLD, 18));
-        jPanel3.add(next);
+    next = new JButton("Next ->");
+    next.setBounds(900, 500, 120, 50);
+    next.setBackground(new Color(51, 0, 153));
+    next.setForeground(new Color(255, 255, 255));
+    next.setFont(new Font("Arial", Font.BOLD, 18));
+    jPanel3.add(next);
 
-        ans1 = new JButton(answers[i][0]);
-        ans2 = new JButton(answers[i][1]);
-        ans3 = new JButton(answers[i][2]);
-        ans4 = new JButton(answers[i][3]);
+    ans1 = new JButton(answers[i][0]);
+    ans2 = new JButton(answers[i][1]);
+    ans3 = new JButton(answers[i][2]);
+    ans4 = new JButton(answers[i][3]);
 
-        setupAnswerButton(ans1, 100, 200);
-        setupAnswerButton(ans2, 650, 200);
-        setupAnswerButton(ans3, 100, 375);
-        setupAnswerButton(ans4, 650, 375);
-        
-        // Next button functionality to load the next question
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (i < questions.length - 1) {
-                    if (ans.equals(correct_ans[i])) {
-                        score = score+10;
+    setupAnswerButton(ans1, 100, 200);
+    setupAnswerButton(ans2, 650, 200);
+    setupAnswerButton(ans3, 100, 375);
+    setupAnswerButton(ans4, 650, 375);
+    
+    // Next button functionality to load the next question
+    next.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (i < questions.length - 1) {
+                if (ans != null && ans.equals(correct_ans[i])) {
+                    score += 10;
+                }
+                i++;
+                q.setText(questions[i]);
+
+                ans1.setText(answers[i][0]);
+                ans2.setText(answers[i][1]);
+                ans3.setText(answers[i][2]);
+                ans4.setText(answers[i][3]);
+
+                if (lastSelectedButton != null) {
+                    lastSelectedButton.setBackground(new Color(51, 0, 153));
+                }
+            } else {
+                if (ans != null && ans.equals(correct_ans[i])) {
+                    score += 10;
+                }
+                // Database connection and Leader frame logic
+                try {
+                    String url = "jdbc:mysql://localhost:3306/quiz";
+                    String user = "root";
+                    String password = "";
+
+                    Connection conn = DriverManager.getConnection(url, user, password);
+
+                    String sql2 = "SELECT score FROM welcome WHERE email = ?";
+                    PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+                    pstmt2.setString(1, email);
+
+                    ResultSet rs2 = pstmt2.executeQuery();
+                    if (rs2.next()) {
+                        s = rs2.getInt("score");
                     }
-                    i++;
-                    q.setText(questions[i]);
 
-                    ans1.setText(answers[i][0]);
-                    ans2.setText(answers[i][1]);
-                    ans3.setText(answers[i][2]);
-                    ans4.setText(answers[i][3]);
-
-                    if (lastSelectedButton != null) {
-                        lastSelectedButton.setBackground(new Color(51, 0, 153));
+                    if (score > s) {
+                        String sql = "UPDATE welcome SET score = ? WHERE email = ?";
+                        PreparedStatement pstmt = conn.prepareStatement(sql);
+                        pstmt.setInt(1, score);
+                        pstmt.setString(2, email);
+                        pstmt.executeUpdate();
                     }
-                } else {
-                    if (ans.equals(correct_ans[i])) {
-                        score = score+10;
-                    }
-                    //JOptionPane.showMessageDialog(null, "Score: " + score);
-                    
-                    try {
-                        String url = "jdbc:mysql://localhost:3306/quiz";
-                        String user = "root";
-                        String password = "";
 
-                        Connection conn = DriverManager.getConnection(url, user, password);
-                        
-                        String sql2 = "SELECT score FROM welcome WHERE email = ?";
-                        PreparedStatement pstmt2 = conn.prepareStatement(sql2);
-                        pstmt2.setString(1, email);
-
-                        ResultSet rs2 = pstmt2.executeQuery();
-                        if (rs2.next()) {
-                            s = rs2.getInt("score");
-                        }
-
-                        String sql1 = "SELECT score FROM welcome ORDER BY score DESC LIMIT 3";
-                        PreparedStatement pstmt1 = conn.prepareStatement(sql1);
-                        ResultSet rs1 = pstmt1.executeQuery();
-                        int index = 0;
-                        while (rs1.next() && index < topScore.length) {
-                            topScore[index] = rs1.getInt("score");
-                            index++;
-                        }
-                        
-                        if (score > s) {
-                            String sql = "UPDATE welcome SET score = ? WHERE email = ?";
-                            PreparedStatement pstmt = conn.prepareStatement(sql);
-                            pstmt.setInt(1, score);
-                            pstmt.setString(2, email);
-                            pstmt.executeUpdate();
-                        }
-                        
-                        Leader obj = new Leader();
-                        obj.setVisible(true);
-                        dispose();
-                        conn.close();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
+                    Leader obj = new Leader();
+                    obj.setVisible(true);
+                    dispose();
+                    conn.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
-        });
-    }
-
+        }
+    });
+}
+    
+    
+    
     private void setupAnswerButton(final JButton button, int x, int y) {
-        button.setBounds(x, y, 350, 75);
+        button.setBounds(x, y, 300, 65);
         button.setBackground(new Color(51, 0, 153));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 40));
+        button.setFont(new Font("Arial", Font.BOLD, 30));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -219,3 +218,4 @@ public class Questions extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
 }
+

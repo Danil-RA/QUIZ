@@ -222,7 +222,7 @@ public class SignUp extends javax.swing.JFrame {
         if(password.equals(rePassword))
         {
             try{
-                String s = "insert into welcome(slno,Name,email,password,rePassword) values(slNo, '"+jTextField1.getText()+"','"+jTextField2.getText()+"','"+jPasswordField1.getText()+"','"+jPasswordField2.getText()+"');";
+                String s = "insert into welcome(sIno,Name,email,password,rePassword) values(sIno, '"+jTextField1.getText()+"','"+jTextField2.getText()+"','"+jPasswordField1.getText()+"','"+jPasswordField2.getText()+"');";
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz","root","");
                 Statement stm = con.createStatement();
